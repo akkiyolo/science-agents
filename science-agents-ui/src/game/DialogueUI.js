@@ -89,25 +89,53 @@ export default class DialogueUI {
     connectWebSocket(npcId) {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const host = window.location.host;
-        // If developing locally with Webpack dev server (8080), explicitly point to FastAPI (8000)
         const wsHost = host.includes('localhost:8080') || host.includes('localhost:3000') ? 'localhost:8000' : host;
         
         const wsUrl = `${protocol}//${wsHost}/ws/dialogue/${npcId}`;
-        this.websocket = new WebSocket(wsUrl);
         
-        this.websocket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === 'token') {
-                this.appendMessage(npcId, data.content, "#4CAF50");
-            } else if (data.type === 'error') {
-                this.appendMessage("Error", data.content, "#ff0000");
-            }
-        };
+        try {
+            this.websocket = new WebSocket(wsUrl);
+            
+            this.websocket.onopen = () => {
+                console.log(`WebSocket connected to ${wsUrl}`);
+            };
+
+            this.websocket.onerror = (error) => {
+                console.error("WebSocket Error:", error);
+                this.appendMessage("System", "Failed to connect to the scientist. They might be busy.", "#ffaa00");
+            };
+
+            this.websocket.onclose = () => {
+                console.log("WebSocket connection closed.");
+            };
+            
+            this.websocket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'token') {
+                    this.appendMessage(npcId, data.content, "#4CAF50");
+                } else if (data.type === 'error') {
+                    this.appendMessage("Error", data.content, "#ff0000");
+                }
+            };
+        } catch (e) {
+            console.error("Failed to initialize WebSocket", e);
+            this.appendMessage("System", "Could not establish connection.", "#ffaa00");
+        }
     }
 
     sendMessage() {
         const text = this.dialogueInput.value.trim();
-        if (!text || !this.websocket || this.websocket.readyState !== WebSocket.OPEN) return;
+        if (!text) return;
+
+        if (!this.websocket) {
+            this.appendMessage("System", "Connection not initialized.", "#ffaa00");
+            return;
+        }
+
+        if (this.websocket.readyState !== WebSocket.OPEN) {
+            this.appendMessage("System", `Connection not ready (state: ${this.websocket.readyState}). Try again in a moment.`, "#ffaa00");
+            return;
+        }
 
         this.appendMessage("You", text, "#fff");
         
