@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScienceAgents</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            height: 100vh;
+            color: white;
+            font-family: monospace;
+        }
+        #game-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #ui-layer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #fff;
+            border-radius: 8px;
+            padding: 15px;
+            display: none;
+            flex-direction: column;
+            pointer-events: auto;
+        }
+        #dialogue-text {
+            flex-grow: 1;
+            margin-bottom: 10px;
+            overflow-y: auto;
+        }
+        #dialogue-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        #dialogue-input {
+            flex-grow: 1;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        #dialogue-send {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #dialogue-send:hover {
+            background: #45a049;
+        }
+        #welcome-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        #welcome-screen h1 {
+            color: #4CAF50;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px #000;
+        }
+        #welcome-screen p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        #start-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background 0.2s;
+        }
+        #start-button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        #start-button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Phaser injects canvas here -->
+        <div id="ui-layer">
+            <div id="dialogue-name" style="font-weight: bold; color: #4CAF50; margin-bottom: 5px;">Einstein</div>
+            <div id="dialogue-text">Press ENTER to chat...</div>
+            <div id="dialogue-input-container">
+                <input type="text" id="dialogue-input" placeholder="Ask a question..." autocomplete="off">
+                <button id="dialogue-send">Send</button>
+            </div>
+        </div>
+        
+        <div id="welcome-screen">
+            <h1>Welcome to ScienceAgents!</h1>
+            <p>
+                Explore the town and interact with some of history's greatest minds.<br><br>
+                <b>Controls:</b><br>
+                Use <b>W, A, S, D</b> or <b>Arrow Keys</b> to move.<br>
+                Walk into a scientist to start a conversation.<br>
+                Press <b>ESC</b> to leave a conversation.
+            </p>
+            <button id="start-button">Start Exploring</button>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('start-button').addEventListener('click', function() {
+            document.getElementById('welcome-screen').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
