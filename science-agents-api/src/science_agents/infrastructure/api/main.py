@@ -11,8 +11,10 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from science_agents.config.settings import logger, validate_settings
 from science_agents.infrastructure.mongo.client import close_mongo_client
@@ -56,3 +58,10 @@ app.include_router(ws_router)
 async def health_check():
     """Health check endpoint."""
     return {"status": "ok", "service": "science-agents-api"}
+
+# Serve frontend static files if they exist (for production deployment)
+frontend_dist = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), "ui_build")
+if os.path.isdir(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
+else:
+    logger.warning(f"Frontend build directory not found at {frontend_dist}. API will run without serving UI.")
