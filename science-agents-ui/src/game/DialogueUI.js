@@ -87,7 +87,12 @@ export default class DialogueUI {
     }
 
     connectWebSocket(npcId) {
-        const wsUrl = `ws://localhost:8000/ws/dialogue/${npcId}`;
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const host = window.location.host;
+        // If developing locally with Webpack dev server (8080), explicitly point to FastAPI (8000)
+        const wsHost = host.includes('localhost:8080') || host.includes('localhost:3000') ? 'localhost:8000' : host;
+        
+        const wsUrl = `${protocol}//${wsHost}/ws/dialogue/${npcId}`;
         this.websocket = new WebSocket(wsUrl);
         
         this.websocket.onmessage = (event) => {
