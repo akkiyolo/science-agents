@@ -1,5 +1,8 @@
 # ScienceAgents
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c077e838-2f29-46a0-bf2c-46aa54d66229" />
+
+
 **Walk up to Einstein. Argue with Darwin. Ask Curie about radium.**
 
 ScienceAgents is a top-down RPG where you talk to embodied historical scientists — powered by real LLM agents grounded in their actual ideas, not generic chatbot personas.
