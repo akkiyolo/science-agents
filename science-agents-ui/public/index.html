@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ScienceAgents</title>
+
+    <!-- ScienceAgents favicon -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.ico">
+
     <style>
+        /* ================================
+           GLOBAL
+           ================================ */
+
+        html,
         body {
             margin: 0;
             padding: 0;
-            background-color: #000;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-            height: 100vh;
-            color: white;
+            background-color: #000;
+            color: #fff;
             font-family: monospace;
         }
+
+        body {
+            position: relative;
+        }
+
+        /* ================================
+           GAME CONTAINER
+           ================================ */
+
         #game-container {
             position: absolute;
             top: 0;
@@ -24,126 +43,338 @@
             height: 100vh;
             overflow: hidden;
         }
+
+        /* ================================
+           DIALOGUE UI
+           ================================ */
+
         #ui-layer {
             position: absolute;
             bottom: 20px;
             left: 20px;
             right: 20px;
+
             height: 150px;
+
             background: rgba(0, 0, 0, 0.8);
+
             border: 2px solid #fff;
             border-radius: 8px;
+
             padding: 15px;
+
             display: none;
             flex-direction: column;
+
             pointer-events: auto;
+
+            z-index: 50;
+
+            box-sizing: border-box;
         }
+
+        #dialogue-name {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
         #dialogue-text {
             flex-grow: 1;
+
             margin-bottom: 10px;
+
             overflow-y: auto;
+
+            line-height: 1.4;
+
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
+
         #dialogue-input-container {
             display: flex;
             gap: 10px;
+            width: 100%;
         }
+
         #dialogue-input {
             flex-grow: 1;
+
+            min-width: 0;
+
             background: #333;
-            color: white;
+            color: #fff;
+
             border: 1px solid #555;
-            padding: 8px;
             border-radius: 4px;
+
+            padding: 8px;
+
+            font-family: monospace;
+            font-size: 14px;
+
+            outline: none;
+
+            box-sizing: border-box;
         }
+
+        #dialogue-input:focus {
+            border-color: #4CAF50;
+        }
+
+        #dialogue-input::placeholder {
+            color: #999;
+        }
+
         #dialogue-send {
             background: #4CAF50;
-            color: white;
+            color: #fff;
+
             border: none;
-            padding: 8px 16px;
-            cursor: pointer;
             border-radius: 4px;
+
+            padding: 8px 16px;
+
+            font-family: monospace;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.1s ease;
         }
+
         #dialogue-send:hover {
             background: #45a049;
         }
+
+        #dialogue-send:active {
+            transform: scale(0.95);
+        }
+
+        /* ================================
+           WELCOME SCREEN
+           ================================ */
+
         #welcome-screen {
             position: absolute;
+
             top: 0;
             left: 0;
+
             width: 100vw;
             height: 100vh;
+
             background: rgba(0, 0, 0, 0.85);
+
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
             align-items: center;
+
             z-index: 100;
+
             text-align: center;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
             backdrop-filter: blur(5px);
         }
+
         #welcome-screen h1 {
             color: #4CAF50;
+
             font-size: 3rem;
+
+            margin-top: 0;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px #000;
+
+            text-shadow:
+                2px 2px 4px #000;
         }
+
         #welcome-screen p {
             font-size: 1.2rem;
+
             max-width: 600px;
+
             line-height: 1.5;
+
             margin-bottom: 30px;
         }
+
+        /* ================================
+           START BUTTON
+           ================================ */
+
         #start-button {
             background: #4CAF50;
-            color: white;
+            color: #fff;
+
             border: none;
+            border-radius: 8px;
+
             padding: 15px 40px;
+
             font-size: 1.5rem;
             font-weight: bold;
-            font-family: inherit;
+
+            font-family: monospace;
+
             cursor: pointer;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: transform 0.1s, background 0.2s;
+
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.3);
+
+            transition:
+                transform 0.1s ease,
+                background 0.2s ease;
         }
+
         #start-button:hover {
             background: #45a049;
             transform: scale(1.05);
         }
+
         #start-button:active {
             transform: scale(0.95);
         }
+
+        /* ================================
+           RESPONSIVE
+           ================================ */
+
+        @media (max-width: 600px) {
+            #welcome-screen h1 {
+                font-size: 2rem;
+            }
+
+            #welcome-screen p {
+                font-size: 1rem;
+            }
+
+            #start-button {
+                font-size: 1.2rem;
+                padding: 12px 30px;
+            }
+
+            #ui-layer {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                height: 170px;
+            }
+
+            #dialogue-input-container {
+                gap: 6px;
+            }
+
+            #dialogue-send {
+                padding: 8px 12px;
+            }
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- =========================================
+         GAME CONTAINER
+         Phaser injects its canvas here.
+         ========================================= -->
+
     <div id="game-container">
-        <!-- Phaser injects canvas here -->
+
+        <!-- =====================================
+             DIALOGUE UI
+             ===================================== -->
+
         <div id="ui-layer">
-            <div id="dialogue-name" style="font-weight: bold; color: #4CAF50; margin-bottom: 5px;">Einstein</div>
-            <div id="dialogue-text">Press ENTER to chat...</div>
-            <div id="dialogue-input-container">
-                <input type="text" id="dialogue-input" placeholder="Ask a question..." autocomplete="off">
-                <button id="dialogue-send">Send</button>
+
+            <div id="dialogue-name">
+                Einstein
             </div>
+
+            <div id="dialogue-text">
+                Press ENTER to chat...
+            </div>
+
+            <div id="dialogue-input-container">
+
+                <input
+                    type="text"
+                    id="dialogue-input"
+                    placeholder="Ask a question..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+
+                <button
+                    type="button"
+                    id="dialogue-send"
+                >
+                    Send
+                </button>
+
+            </div>
+
         </div>
-        
+
+        <!-- =====================================
+             WELCOME SCREEN
+             ===================================== -->
+
         <div id="welcome-screen">
-            <h1>Welcome to ScienceAgents!</h1>
+
+            <h1>
+                Welcome to ScienceAgents!
+            </h1>
+
             <p>
-                Explore the town and interact with some of history's greatest minds.<br><br>
-                <b>Controls:</b><br>
-                Use <b>W, A, S, D</b> or <b>Arrow Keys</b> to move.<br>
-                Walk into a scientist to start a conversation.<br>
+                Explore the town and interact with some of history's greatest minds.
+                <br><br>
+
+                <b>Controls:</b>
+                <br>
+
+                Use <b>W, A, S, D</b> or <b>Arrow Keys</b> to move.
+                <br>
+
+                Walk into a scientist to start a conversation.
+                <br>
+
                 Press <b>ESC</b> to leave a conversation.
             </p>
-            <button id="start-button">Start Exploring</button>
+
+            <button
+                type="button"
+                id="start-button"
+            >
+                Start Exploring
+            </button>
+
         </div>
+
     </div>
-    
+
+    <!-- =========================================
+         START SCREEN LOGIC
+         ========================================= -->
+
     <script>
-        document.getElementById('start-button').addEventListener('click', function() {
-            document.getElementById('welcome-screen').style.display = 'none';
+        const startButton = document.getElementById("start-button");
+        const welcomeScreen = document.getElementById("welcome-screen");
+
+        startButton.addEventListener("click", () => {
+            welcomeScreen.style.display = "none";
         });
     </script>
+
 </body>
 </html>

@@ -23,6 +23,6 @@ def get_groq_llm():
         api_key=GROQ_API_KEY,
         model=GROQ_MODEL,
         temperature=0.7,
-        max_tokens=1024,
+        max_tokens=512,
         streaming=True,
     )
