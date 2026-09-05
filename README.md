@@ -1,6 +1,7 @@
 # ScienceAgents
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c077e838-2f29-46a0-bf2c-46aa54d66229" />
+<img width="1535" height="747" alt="image" src="https://github.com/user-attachments/assets/003b86f7-0782-41b3-a856-a1c987fbaf78" />
+
 
 
 **Walk up to Einstein. Argue with Darwin. Ask Curie about radium.**
