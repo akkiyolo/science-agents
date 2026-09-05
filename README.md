@@ -94,9 +94,3 @@ cd science-agents-api
 uv run pytest
 ```
 
-## Roadmap
-
-- [ ] Pixel-art sprites + idle/walk/talk animations per scientist
-- [ ] Dialogue portraits
-- [ ] More scientists (Turing, Feynman, Hypatia?)
-- [ ] Voice output for responses
