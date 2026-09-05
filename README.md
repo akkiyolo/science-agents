@@ -2,7 +2,7 @@
 
 **Walk up to Einstein. Argue with Darwin. Ask Curie about radium.**
 
-ScienceAgents is a top-down RPG where you talk to embodied historical scientists — powered by real LLM agents grounded in their actual ideas, not generic chatbot personas. Built as a fork/homage of [philoagents-course](https://github.com/neural-maze/philoagents-course), reimagined for science.
+ScienceAgents is a top-down RPG where you talk to embodied historical scientists — powered by real LLM agents grounded in their actual ideas, not generic chatbot personas.
 
 <p align="center">
   <img alt="python" src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white">
@@ -100,7 +100,3 @@ uv run pytest
 - [ ] Dialogue portraits
 - [ ] More scientists (Turing, Feynman, Hypatia?)
 - [ ] Voice output for responses
-
-## Credit
-
-Concept and architecture adapted from [neural-maze/philoagents-course](https://github.com/neural-maze/philoagents-course) — same idea, applied to science instead of philosophy.
